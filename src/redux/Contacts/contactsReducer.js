@@ -1,88 +1,105 @@
 import {combineReducers} from 'redux';
-import actionTypes from './contactsActionTypes';
+import { createReducer } from '@reduxjs/toolkit';
+// import actionTypes from './contactsActionTypes';
+import contactsActions from './contactsActions'
 
-const contactsBook = (state = [], {type, payload}) => {
-    switch (type) {
-        case actionTypes.ADD:
-            return [...state, payload.contact];
+const handleAddContact = (state, action) => {
+    return [...state, action.payload.contact]
+};
+const handleRemoveContact = (state, action) => {
+    return state.filter(contact => contact.id !== action.payload.contactId)
+};
 
-        case actionTypes.REMOVE:
-            return state.filter(contact => contact.id !== payload.contactId);
+const contactsBook = createReducer([], {
+    [contactsActions.addContact]: handleAddContact,
+    [contactsActions.removeContact]: handleRemoveContact,
+});
+// const contactsBook = (state = [], {type, payload}) => {
+//     switch (type) {
+//         // case actionTypes.ADD:
+//         case contactsActions.addContact.type:
+//             return [...state, payload.contact];
+
+//         // case actionTypes.REMOVE:
+//         case contactsActions.removeContact.type:
+//             return state.filter(contact => contact.id !== payload.contactId);
                 
-        default:
-            return state;
-    }
-};
+//         default:
+//             return state;
+//     }
+// };
 
-const alert = (state = false, {type}) => {
-    switch (type) {
-        case actionTypes.ALERT:
-            return !state;
+const alert = createReducer(false, {
+    [contactsActions.alertStatus]: (state, action) => !state,
+});
+// const alert = (state = false, {type}) => {
+//     switch (type) {
+//         // case actionTypes.ALERT:
+//         case contactsActions.alertStatus.type:
+//             return !state;
         
-        default:
-            return state;    
-    }
-};
+//         default:
+//             return state;    
+//     }
+// };
 
-const filters = (state = '', {type, payload}) => {
-    switch (type) {
-        case actionTypes.CHANGE_FILTER:
-        // case contactsActions.changeFilter.type:
-            return payload.filter;
+const filters = createReducer('', {
+    [contactsActions.changeFilter]: (state, action) => action.payload.filter,
+});
+// const filters = (state = '', {type, payload}) => {
+//     switch (type) {
+//         // case actionTypes.CHANGE_FILTER:
+//         case contactsActions.changeFilter.type:
+//             return payload.filter;
 
-        default:
-            return state;
-    }
-};
+//         default:
+//             return state;
+//     }
+// };
+
+const nextName = createReducer('', {
+    [contactsActions.changeName]: (state, action) => action.payload.name,
+});
+// const nextName = (state = '', {type, payload}) => {
+//     switch (type) {
+//         // case actionTypes.CHANGE_NAME:
+//         case contactsActions.changeName.type:
+//             return payload.name;
+
+//         default:
+//             return state; 
+//     }
+// };
+
+const nextNumber = createReducer('', {
+    [contactsActions.changeNumber]: (state, action) => action.payload.number,
+});
+// const nextNumber = (state = '', {type, payload}) => {
+//     switch (type) {
+//         // case actionTypes.CHANGE_NUMBER:
+//         case contactsActions.changeNumber.type:
+//             return payload.number;
+
+//         default:
+//             return state; 
+//     }
+// };
+
 
 export default combineReducers({
     contactsBook,
     alert,
     filters,
+    nextName,
+    nextNumber,
 });
 
 
-// state = {
-//     contacts: [
-//         { "id": "id-1", "name": "Rosie Simpson", "number": "459-12-56" },
-//         { "id": "id-2", "name": "Hermione Kline", "number": "443-89-12" },
-//         { "id": "id-3", "name": "Eden Clements", "number": "645-17-79" },
-//         { "id": "id-4", "name": "Annie Copeland", "number": "227-91-26" }
-//     ],
-//     filter: '',
-//     alert: false,
-// }
 
-// addName = (name, number) => {
-//     const contact = {
-//         id: uuidv4(),
-//         name,
-//         number,
-//     };
-//     const chekContact = this.state.contacts.find(
-//         contact => contact.name === name
-//     );
-//     if (!chekContact) {
-//         this.setState(prevState => {
-//             return {
-//                 contacts: [...prevState.contacts, contact]
-//             }
-//         })
-//     }   else {
-//         // alert(`Contact already exists!`)
-//         this.setState({alert: true})
-//         setTimeout(() => {this.setState({alert: false})}, 5000) 
-//     };
-// };
 
-// removeName = (contactId) => {
-//     this.setState(prevState => {
-//         return {
-//             contacts: prevState.contacts.filter(({id}) => id !== contactId)
-//         }
-//     });   
-// };
 
-// changeFilter = (filter) => {
-//     this.setState({filter})
-// }
+
+
+
+
+
